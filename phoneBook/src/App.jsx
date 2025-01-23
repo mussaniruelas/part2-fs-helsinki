@@ -1,51 +1,56 @@
 import { useState } from "react";
-
-const Contacts = ({ persons }) => {
-  return (
-    <div>
-      <h2>Contacts</h2>
-      <ul>
-        {persons.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+import Contacts from "./components/Contacts";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
-  const [newName, setNewName] = useState("");
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", phone: "040-1234567" },
+  ]);
+  const [newPerson, setNewPerson] = useState({ name: "", phone: "" });
 
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already in the phonebook`);
-      setNewName("");
+    if (
+      persons.some(
+        (person) =>
+          person.name === newPerson.name || person.phone === newPerson.phone
+      )
+    ) {
+      alert(
+        `${newPerson.name} is already added to phonebook or phone number ${newPerson.phone} is already in use`
+      );
     } else {
-      console.log("new contact added", newName);
-      
-      const newContact = {
-        name: newName,
-      };
-      const newPersons = persons.concat(newContact);
+      const newPersons = persons.concat(newPerson);
       setPersons(newPersons);
-      setNewName("");
     }
+    setNewPerson({ name: "", phone: "" });
   };
 
-  const handleNewName = (event) => {
-    setNewName(event.target.value);
+  const handleNewPerson = (event) => {
+    const { name, value } = event.target;
+    setNewPerson({ ...newPerson, [name]: value });
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
-        <label>
-          name: <input value={newName} onChange={handleNewName} />
-        </label>
+        <div>
+          name:{" "}
+          <input
+            value={newPerson.name}
+            name="name"
+            onChange={handleNewPerson}
+          />
+        </div>
+        <div>
+          phone:{" "}
+          <input
+            value={newPerson.phone}
+            name="phone"
+            onChange={handleNewPerson}
+          />
+        </div>
         <div>
           <button type="submit">add</button>
         </div>
