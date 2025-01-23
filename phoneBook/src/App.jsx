@@ -1,35 +1,43 @@
-import { useState } from 'react'
+import { useState } from "react";
 
 const Contacts = ({ persons }) => {
   return (
     <div>
       <h2>Contacts</h2>
       <ul>
-        {persons.map(person => <li key={person.name}>{person.name}</li>)}
+        {persons.map((person) => (
+          <li key={person.name}>{person.name}</li>
+        ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
-  const [newName, setNewName] = useState('')
+  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [newName, setNewName] = useState("");
 
   const addPerson = (event) => {
-    event.preventDefault()
-    const newContact = {
-      name: newName
-    }
+    event.preventDefault();
 
-    setPersons(persons.concat(newContact))
-    setNewName('')
-  }
+    if (persons.some((person) => person.name === newName)) {
+      alert(`${newName} is already in the phonebook`);
+      setNewName("");
+    } else {
+      console.log("new contact added", newName);
+      
+      const newContact = {
+        name: newName,
+      };
+      const newPersons = persons.concat(newContact);
+      setPersons(newPersons);
+      setNewName("");
+    }
+  };
 
   const handleNewName = (event) => {
-    setNewName(event.target.value)
-  }
+    setNewName(event.target.value);
+  };
 
   return (
     <div>
@@ -45,7 +53,7 @@ const App = () => {
 
       <Contacts persons={persons} />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
