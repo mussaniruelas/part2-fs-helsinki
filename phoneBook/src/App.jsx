@@ -1,62 +1,36 @@
 import { useState } from "react";
 import Contacts from "./components/Contacts";
+import Form from "./components/Form";
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: "040-1234567" },
-  ]);
-  const [newPerson, setNewPerson] = useState({ name: "", phone: "" });
+    { name: 'Arto Hellas', number: '040-123456', id: 1 },
+    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
+    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
+    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
+  ])
 
-  const addPerson = (event) => {
-    event.preventDefault();
+  const [filterName, setFilterName] = useState("");
+  const [showPersons, setShowPersons] = useState(persons);
 
-    if (
-      persons.some(
-        (person) =>
-          person.name === newPerson.name || person.phone === newPerson.phone
-      )
-    ) {
-      alert(
-        `${newPerson.name} is already added to phonebook or phone number ${newPerson.phone} is already in use`
-      );
-    } else {
-      const newPersons = persons.concat(newPerson);
-      setPersons(newPersons);
-    }
-    setNewPerson({ name: "", phone: "" });
-  };
-
-  const handleNewPerson = (event) => {
-    const { name, value } = event.target;
-    setNewPerson({ ...newPerson, [name]: value });
+  const handleFilter = (e) => {
+    const newName = e.target.value;
+    setFilterName(newName);
+    const show = newName
+      ? persons.filter((person) =>
+          person.name.toLowerCase().includes(newName.toLowerCase())
+        )
+      : persons;
+    setShowPersons(show);
   };
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name:{" "}
-          <input
-            value={newPerson.name}
-            name="name"
-            onChange={handleNewPerson}
-          />
-        </div>
-        <div>
-          phone:{" "}
-          <input
-            value={newPerson.phone}
-            name="phone"
-            onChange={handleNewPerson}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-
-      <Contacts persons={persons} />
+      <h1>Phonebook</h1>
+      Filter shown with{" "}
+      <input type="text" value={filterName} onChange={handleFilter} />
+      <Form persons={persons} setPersons={setPersons} />
+      <Contacts persons={showPersons} />
     </div>
   );
 };
