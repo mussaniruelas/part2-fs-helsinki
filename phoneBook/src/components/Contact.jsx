@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
-function Contact({person}) {
+function Contact({ person }) {
   return (
     <>
-        <li>{person.name}: {person.phone}</li>
+      <li>
+        {person.name}: {person.number}
+      </li>
     </>
-  )
+  );
 }
 
-export default Contact
+export default Contact;

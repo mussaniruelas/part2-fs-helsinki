@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Contacts from "./components/Contacts";
 import Form from "./components/Form";
+import Filter from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,26 +10,14 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
   ])
-
-  const [filterName, setFilterName] = useState("");
   const [showPersons, setShowPersons] = useState(persons);
-
-  const handleFilter = (e) => {
-    const newName = e.target.value;
-    setFilterName(newName);
-    const show = newName
-      ? persons.filter((person) =>
-          person.name.toLowerCase().includes(newName.toLowerCase())
-        )
-      : persons;
-    setShowPersons(show);
-  };
+  
 
   return (
     <div>
       <h1>Phonebook</h1>
-      Filter shown with{" "}
-      <input type="text" value={filterName} onChange={handleFilter} />
+
+      <Filter showPersons={showPersons} setShowPersons={setShowPersons} persons={persons} />
       <Form persons={persons} setPersons={setPersons} />
       <Contacts persons={showPersons} />
     </div>
