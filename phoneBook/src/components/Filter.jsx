@@ -11,7 +11,6 @@ function Filter({ showPersons, setShowPersons, persons}) {
           person.name.toLowerCase().includes(newName.toLowerCase())
         )
       : persons;
-    console.log(show);
     
     setShowPersons(show);
   };
