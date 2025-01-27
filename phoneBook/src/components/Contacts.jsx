@@ -5,11 +5,20 @@ const Contacts = ({ persons }) => {
   return (
     <div>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map((person) => (
-          <Contact key={person.id} person={person} />
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {persons.map((person) => (
+            <Contact key={person.id} person={person} />
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { create } from "../services/contact";
+import { create, update } from "../services/contact";
 
 function Form({ persons, setPersons }) {
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
@@ -7,15 +7,25 @@ function Form({ persons, setPersons }) {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (
-      persons.some(
-        (person) =>
-          person.name === newPerson.name || person.number === newPerson.number
-      )
-    ) {
-      alert(
-        `${newPerson.name} is already added to phonebook or phone number ${newPerson.number} is already in use`
-      );
+    const personObject = persons.find(
+      (person) => person.name === newPerson.name
+    );
+
+    if (personObject) {
+      if (window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = { ...personObject, number: newPerson.number };
+        update(personObject.id, changedPerson)
+          .then((data) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== personObject.id ? person : data
+              )
+            );
+          })
+          .catch((error) => {
+            alert(`Error: ${error}`);
+          });
+      }
     } else {
       const newPersons = persons.concat(newPerson);
       create(newPerson)

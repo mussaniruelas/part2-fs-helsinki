@@ -11,7 +11,17 @@ const create = (newPerson) => {
 };
 
 const update = (id, newPerson) => {
-  return axios.put(`${baseUrl}/${id}`, newPerson).then((response) => response.data);
+    console.log(id, newPerson);
+    
+  return axios
+    .put(`${baseUrl}/${id}`, newPerson)
+    .then((response) => response.data);
 };
 
-export { getAll, create, update };
+const deleteId = (id) => {
+    if (window.confirm("Delete the contact?")) 
+        return axios.delete(`${baseUrl}/${id}`);
+    return null;
+};
+
+export { getAll, create, update, deleteId };
