@@ -1,15 +1,14 @@
 import React from "react";
-import { deleteId } from "../services/contact";
 
 
-function Contact({ person }) {
+function Contact({ person, deletePerson }) {
   return (
     <>
       <tr>
         <td>{person.name}</td>
         <td>{person.number}</td>
         <td>
-          <button onClick={() => deleteId(person.id)}>delete</button>
+          <button onClick={() => deletePerson()}>delete</button>
         </td>
       </tr>
     </>

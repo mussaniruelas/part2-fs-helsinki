@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Filter({ showPersons, setShowPersons, persons}) {
+function Filter({persons, setPersons}) {
   const [filterName, setFilterName] = useState("");
 
   const handleFilter = (e) => {
@@ -12,7 +12,8 @@ function Filter({ showPersons, setShowPersons, persons}) {
         )
       : persons;
     
-    setShowPersons(show);
+    setPersons(show);
+
   };
 
   return (

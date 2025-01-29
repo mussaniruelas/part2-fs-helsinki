@@ -1,48 +1,61 @@
 import { useState } from "react";
 import { create, update } from "../services/contact";
 
-function Form({ persons, setPersons }) {
+function Form({ persons, setPersons, setMessage }) {
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
-
-  const addPerson = (event) => {
-    event.preventDefault();
-
-    const personObject = persons.find(
-      (person) => person.name === newPerson.name
-    );
-
-    if (personObject) {
-      if (window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
-        const changedPerson = { ...personObject, number: newPerson.number };
-        update(personObject.id, changedPerson)
-          .then((data) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== personObject.id ? person : data
-              )
-            );
-          })
-          .catch((error) => {
-            alert(`Error: ${error}`);
-          });
-      }
-    } else {
-      const newPersons = persons.concat(newPerson);
-      create(newPerson)
-        .then((data) => {
-          setPersons(newPersons);
-        })
-        .catch((error) => {
-          alert(`Error: ${error}`);
-        });
-    }
-    setNewPerson({ name: "", number: "" });
-  };
 
   const handleNewPerson = (event) => {
     const { name, value } = event.target;
     setNewPerson({ ...newPerson, [name]: value });
   };
+
+  const handleUpdatePerson = (personObject) => {
+    const id = personObject.id;
+    const changedPerson = { ...personObject, number: newPerson.number };
+    update(id, changedPerson)
+      .then((data) => {
+        setPersons(persons.map((person) => (person.id !== id ? person : data)));
+      })
+      .catch((error) => {
+        alert(`Error: ${error}`);
+      });
+  };
+
+  const handleCreatePerson = (newPerson) => {
+    const newPersons = persons.concat(newPerson);
+    create(newPerson)
+      .then((data) => {
+        setPersons(newPersons);
+      })
+      .catch((error) => {
+        alert(`Error: ${error}`);
+      });
+  };
+
+  const addPerson = (event) => {
+    event.preventDefault();
+    const personAux = { ...newPerson };
+    setNewPerson({ name: "", number: "" });
+
+    const personObject = persons.find((p) => p.name === personAux.name);
+
+    if (personObject) {
+      const confirmation = window.confirm(
+        `${personAux.name} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (confirmation) handleUpdatePerson(personObject);
+      else return;
+    } else {
+      handleCreatePerson(personAux);
+    }
+
+    // set message
+    setMessage(`Added ${personAux.name}`);
+    setTimeout(() => {
+      setMessage(null);
+    }, 5000);
+  };
+
   return (
     <>
       <h2>Add a new</h2>
@@ -58,7 +71,7 @@ function Form({ persons, setPersons }) {
         <div>
           phone:{" "}
           <input
-            value={newPerson.phone}
+            value={newPerson.number}
             name="number"
             onChange={handleNewPerson}
           />
