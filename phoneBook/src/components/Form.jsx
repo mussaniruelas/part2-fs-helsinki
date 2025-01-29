@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { create, update } from "../services/contact";
 
-function Form({ persons, setPersons, setMessage }) {
+function Form({ persons, setPersons, setMessage, setErrorMessage }) {
   const [newPerson, setNewPerson] = useState({ name: "", number: "" });
 
   const handleNewPerson = (event) => {
@@ -15,9 +15,17 @@ function Form({ persons, setPersons, setMessage }) {
     update(id, changedPerson)
       .then((data) => {
         setPersons(persons.map((person) => (person.id !== id ? person : data)));
+        setMessage(`Update ${personObject.name}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch((error) => {
-        alert(`Error: ${error}`);
+        setErrorMessage(`Information of ${personObject.name} has already been removed from server`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+        setPersons(persons.filter((person) => person.id !== personObject.id));
       });
   };
 
@@ -26,9 +34,16 @@ function Form({ persons, setPersons, setMessage }) {
     create(newPerson)
       .then((data) => {
         setPersons(newPersons);
+        setMessage(`Update ${newPerson.name}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch((error) => {
-        alert(`Error: ${error}`);
+        setErrorMessage(`Information of ${newPerson.name} has already been removed from server`);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
       });
   };
 
@@ -48,12 +63,6 @@ function Form({ persons, setPersons, setMessage }) {
     } else {
       handleCreatePerson(personAux);
     }
-
-    // set message
-    setMessage(`Added ${personAux.name}`);
-    setTimeout(() => {
-      setMessage(null);
-    }, 5000);
   };
 
   return (
