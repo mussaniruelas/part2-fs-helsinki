@@ -1,0 +1,17 @@
+{
+  "contries": [
+    {
+      "id": 1,
+      "name": "Afghanistan",
+      "capital": [
+"Kuwait City"
+],
+      "languages": ["Pashto", "Dari"],
+      "flags": {
+        "png": "https://flagcdn.com/w320/kw.png",
+        "svg": "https://flagcdn.com/kw.svg",
+        "alt": "The flag of Kuwait is composed of three equal horizontal bands of green, white and red, with a black trapezium superimposed on the hoist side of the field. This trapezium has its base on the hoist end and spans about one-fourth the width of the field."
+      }
+    }
+  ]
+}
