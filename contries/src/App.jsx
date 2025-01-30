@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       find countries: <input type="text" value={search} onChange={handleSearch} />
-      <Contries contries={contries} />
+      <Contries contries={contries} setContries={setContries}/>
     </>
   );
 }
