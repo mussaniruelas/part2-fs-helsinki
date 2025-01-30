@@ -11,6 +11,8 @@ const getAll = () => {
       area: c.area,
       languages: c.languages,
       flag: c.flags.png,
+      lat: c.capitalInfo && c.capitalInfo.latlng ? c.capitalInfo.latlng[0] : 64,
+      lng: c.capitalInfo && c.capitalInfo.latlng ? c.capitalInfo.latlng[0] : 26,
     }))
   );
   return contries;

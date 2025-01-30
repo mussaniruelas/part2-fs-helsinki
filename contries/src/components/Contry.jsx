@@ -1,7 +1,13 @@
-import React from 'react'
+import {useEffect, useState} from 'react'
+import {getWeather} from '../service/wather';
 
 function Contry({ contry }) {
-    console.log(contry, Object.entries(contry.languages)); // Muestra las entradas del objeto en la consola
+    const [weather, setWeather] = useState(null);
+
+    useEffect(() => {
+        getWeather(contry.lat, contry.lng).then((data) => setWeather(data));
+    },[])
+    
 
     return (
         <>
@@ -15,6 +21,12 @@ function Contry({ contry }) {
                 ))}
             </ul>
             <img src={contry.flag} alt={`Flag of ${contry.name}`} width="150"/>
+
+            <h3>Wather in {contry.name}</h3>
+            <p>temperature: {/*weather.temp*/ '-3.73 Celcius'}</p>
+            <img src={/*weather.icon*/ ''} alt="Wather icon" />
+            <p>wind: { /*weather.wind*/ '1.34 m/s'}</p>
+
         </>
     )
 }
